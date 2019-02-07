@@ -1,135 +1,122 @@
-var Milk = /** @class */ (function () {
-    function Milk() {
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var TeaMaterial = /** @class */ (function () {
+    function TeaMaterial() {
         this.volume = 1000;
     }
-    Milk.prototype.getMilk = function (volume) {
+    TeaMaterial.prototype.get = function (volume) {
         if (this.has(volume) === true) {
             this.volume = this.volume - volume;
             return volume;
         }
-        throw new Error('Milk is done!');
+        throw new Error('Material is done!');
     };
-    Milk.prototype.isExist = function (volume) {
+    TeaMaterial.prototype.isExist = function (volume) {
         return this.has(volume);
     };
-    Milk.prototype.has = function (volume) {
+    TeaMaterial.prototype.has = function (volume) {
         if (this.volume >= volume) {
             return true;
         }
         return false;
     };
-    return Milk;
+    return TeaMaterial;
 }());
-var Coffe = /** @class */ (function () {
-    function Coffe() {
-        this.volume = 1000;
+var Sugar = /** @class */ (function (_super) {
+    __extends(Sugar, _super);
+    function Sugar() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    Coffe.prototype.getCoffe = function (volume) {
-        if (this.has(volume) === true) {
-            this.volume = this.volume - volume;
-            return volume;
+    Sugar.prototype.get = function (volume) {
+        try {
+            return _super.prototype.get.call(this, volume);
         }
-        throw new Error('Coffe is done!');
-    };
-    Coffe.prototype.isExist = function (volume) {
-        return this.has(volume);
-    };
-    Coffe.prototype.has = function (volume) {
-        if (this.volume >= volume) {
-            return true;
+        catch (e) {
+            throw new Error('Sugar is done!');
         }
-        return false;
     };
-    return Coffe;
-}());
-var Water = /** @class */ (function () {
+    return Sugar;
+}(TeaMaterial));
+var Tea = /** @class */ (function (_super) {
+    __extends(Tea, _super);
+    function Tea() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Tea.prototype.get = function (volume) {
+        try {
+            return _super.prototype.get.call(this, volume);
+        }
+        catch (e) {
+            throw new Error('Tea is done!');
+        }
+    };
+    return Tea;
+}(TeaMaterial));
+var Water = /** @class */ (function (_super) {
+    __extends(Water, _super);
     function Water() {
-        this.volume = 1000;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    Water.prototype.getVolume = function () {
-        return this.volume;
-    };
-    Water.prototype.getWater = function (volume) {
-        if (this.has(volume) === true) {
-            this.volume = this.volume - volume;
-            return volume;
+    Water.prototype.get = function (volume) {
+        try {
+            return _super.prototype.get.call(this, volume);
         }
-        throw new Error('Water is done!');
-    };
-    Water.prototype.isExist = function (volume) {
-        return this.has(volume);
-    };
-    Water.prototype.has = function (volume) {
-        if (this.volume >= volume) {
-            return true;
+        catch (e) {
+            throw new Error('Water is done!');
         }
-        return false;
     };
     return Water;
-}());
-var CoffeMachine = /** @class */ (function () {
-    function CoffeMachine(milk, coffe, water) {
-        this.milk = milk;
-        this.coffe = coffe;
+}(TeaMaterial));
+var TeaMachine = /** @class */ (function () {
+    function TeaMachine(sugar, tea, water) {
+        this.sugar = sugar;
+        this.tea = tea;
         this.water = water;
     }
-    CoffeMachine.prototype.getLatte = function () {
+    TeaMachine.prototype.getTea = function () {
+        var sugarToCreate = 20;
+        var teaToCreate = 50;
         var waterToCreate = 100;
-        var coffeToCreate = 100;
-        var milkToCreate = 100;
-        if (this.has(waterToCreate, coffeToCreate, milkToCreate) !== true) {
-            throw new Error('We are dont make Latte!');
+        if (this.has(waterToCreate, teaToCreate, sugarToCreate) !== true) {
+            throw new Error('We are dont make Tea!');
         }
-        var latte = this.createCoffe('Latte', waterToCreate, coffeToCreate, milkToCreate);
-        return latte;
-    };
-    CoffeMachine.prototype.getCapuchino = function () {
-        var waterToCreate = 100;
-        var coffeToCreate = 20;
-        var milkToCreate = 50;
-        if (this.has(waterToCreate, coffeToCreate, milkToCreate) !== true) {
-            throw new Error('We are dont make Capuchino');
-        }
-        var capuchino = this.createCoffe('Capuchino', waterToCreate, coffeToCreate, milkToCreate);
-        return capuchino;
-    };
-    CoffeMachine.prototype.getAmericano = function () {
-        var waterToCreate = 100;
-        var coffeToCreate = 20;
-        if (this.has(waterToCreate, coffeToCreate) !== true) {
-            throw new Error('We are dont make Americano');
-        }
-        var americano = this.createCoffe('Americano', waterToCreate, coffeToCreate);
-        return americano;
+        var tea = this.createTea('Tea', waterToCreate, teaToCreate, sugarToCreate);
+        return tea;
     };
     //############
-    CoffeMachine.prototype.createCoffe = function (name, water, coffe, milk) {
-        var makeWater = this.water.getWater(water);
-        var makeCoffe = this.coffe.getCoffe(coffe);
-        var makeMilk;
-        if (milk !== undefined) {
-            makeMilk = this.milk.getMilk(milk);
-        }
+    TeaMachine.prototype.createTea = function (name, sugar, tea, water) {
+        var makeWater = this.water.get(water);
+        var makeCoffe = this.tea.get(tea);
+        var makeSugar = this.sugar.get(sugar);
         return {
             name: name,
             description: 'Created!'
         };
     };
-    CoffeMachine.prototype.has = function (water, coffe, milk) {
+    TeaMachine.prototype.has = function (water, tea, sugar) {
         if (this.water.isExist(water) !== true) {
             return false;
         }
-        if (this.coffe.isExist(water) !== true) {
+        if (this.tea.isExist(water) !== true) {
             return;
         }
-        if (milk !== undefined && this.milk.isExist(water) !== true) {
+        if (this.sugar.isExist(water) !== true) {
             return false;
         }
         return true;
     };
-    return CoffeMachine;
+    return TeaMachine;
 }());
-var coffeMachine = new CoffeMachine(new Milk(), new Coffe(), new Water());
-window['_'] = coffeMachine;
-// const myLatte = coffeMachine.getLatte();
-// console.log(myLatte.description);
+var teaMachine = new TeaMachine(new Sugar(), new Tea(), new Water());
+window['_'] = teaMachine;

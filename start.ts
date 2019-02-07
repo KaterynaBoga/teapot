@@ -1,15 +1,13 @@
+abstract class TeaMaterial {
+    protected volume: number = 1000;
 
-
-class Milk {
-    private volume: number = 1000;
-
-    public getMilk(volume: number): number {
+    public get(volume: number): number {
         if (this.has(volume) === true) {
             this.volume = this.volume - volume;
             return volume;
         }
 
-        throw new Error('Milk is done!');
+        throw new Error('Material is done!');
     }
 
     public isExist(volume: number): boolean {
@@ -25,143 +23,80 @@ class Milk {
     }
 }
 
-class Coffe {
-    private volume: number = 1000;
+class Sugar extends TeaMaterial {
+   public get(volume: number): number {
+       try {
+           return super.get(volume);
+       } catch (e) {
+           throw new Error('Sugar is done!');
+       }
+   }
+}
 
-    public getCoffe(volume: number): number {
-        if (this.has(volume) === true) {
-            this.volume = this.volume - volume;
-            return volume;
+class Tea extends TeaMaterial {
+    public get(volume: number): number {
+        try {
+            return super.get(volume);
+        } catch (e) {
+            throw new Error('Tea is done!');
         }
-
-        throw new Error('Coffe is done!');
-    }
-
-    public isExist(volume: number): boolean {
-        return this.has(volume);
-    }
-
-    private has(volume: number): boolean {
-        if (this.volume >= volume) {
-            return true;
-        }
-
-        return false;
     }
 }
 
-class Water {
-    private volume: number = 1000;
-
-    public getVolume(): number {
-        return this.volume;
-    }
-
-    public getWater(volume: number): number {
-        if (this.has(volume) === true) {
-            this.volume = this.volume - volume;
-
-            return volume;
+class Water extends TeaMaterial {
+    public get(volume: number): number {
+        try {
+            return super.get(volume);
+        } catch (e) {
+            throw new Error('Water is done!');
         }
-
-        throw new Error('Water is done!');
-    }
-
-    public isExist(volume: number): boolean {
-        return this.has(volume);
-    }
-
-    private has(volume: number): boolean {
-        if (this.volume >= volume) {
-            return true;
-        }
-
-        return false;
     }
 }
 
-interface CoffeInterface {
+interface TeaInterface {
     name: string;
     description: string
 }
 
-class CoffeMachine {
+class TeaMachine {
     constructor(
-        private milk: Milk,
-        private coffe: Coffe,
+        private sugar: Sugar,
+        private tea: Tea,
         private water: Water
     ) {}
 
-    public getLatte(): CoffeInterface {
+    public getTea(): TeaInterface {
+        const sugarToCreate: number = 20;
+        const teaToCreate: number = 50;
         const waterToCreate: number = 100;
-        const coffeToCreate: number = 100;
-        const milkToCreate: number = 100;
 
-        if (this.has(waterToCreate, coffeToCreate, milkToCreate) !== true) {
-            throw new Error('We are dont make Latte!')
+        if (this.has(waterToCreate, teaToCreate, sugarToCreate) !== true) {
+            throw new Error('We are dont make Tea!')
         }
 
-        const latte: CoffeInterface = this.createCoffe(
-            'Latte',
+        const tea: TeaInterface = this.createTea(
+            'Tea',
             waterToCreate,
-            coffeToCreate,
-            milkToCreate
+            teaToCreate,
+            sugarToCreate
         );
 
-        return latte;
+        return tea;
     }
 
-    public getCapuchino(): CoffeInterface {
-        const waterToCreate: number = 100;
-        const coffeToCreate: number = 20;
-        const milkToCreate: number = 50;
 
-        if (this.has(waterToCreate, coffeToCreate, milkToCreate) !== true) {
-            throw new Error('We are dont make Capuchino')
-        }
-
-        const capuchino: CoffeInterface = this.createCoffe(
-            'Capuchino',
-            waterToCreate,
-            coffeToCreate,
-            milkToCreate
-        );
-
-        return capuchino;
-    }
-
-    public getAmericano(): CoffeInterface {
-        const waterToCreate: number = 100;
-        const coffeToCreate: number = 20;
-
-        if (this.has(waterToCreate, coffeToCreate) !== true) {
-            throw new Error('We are dont make Americano')
-        }
-
-        const americano: CoffeInterface = this.createCoffe(
-            'Americano',
-            waterToCreate,
-            coffeToCreate
-        );
-
-        return americano;
-    }
 
     //############
 
-    private createCoffe(
+    private createTea(
         name: string,
-        water: number,
-        coffe: number,
-        milk?: number
-    ): CoffeInterface {
-        const makeWater = this.water.getWater(water);
-        const makeCoffe = this.coffe.getCoffe(coffe);
-        let makeMilk;
-
-        if (milk !== undefined) {
-            makeMilk = this.milk.getMilk(milk);
-        }
+        sugar: number,
+        tea: number,
+        water: number
+    ): TeaInterface {
+        const makeWater = this.water.get(water);
+        const makeCoffe = this.tea.get(tea);
+        const makeSugar = this.sugar.get(sugar);
 
         return {
             name: name,
@@ -170,16 +105,16 @@ class CoffeMachine {
 
     }
 
-    private has(water: number, coffe: number, milk?: number): boolean {
+    private has(water: number, tea: number, sugar: number): boolean {
         if (this.water.isExist(water) !== true) {
             return false;
         }
 
-        if (this.coffe.isExist(water) !== true) {
+        if (this.tea.isExist(water) !== true) {
             return;
         }
 
-        if (milk !== undefined && this.milk.isExist(water) !== true) {
+        if (this.sugar.isExist(water) !== true) {
             return false;
         }
 
@@ -187,14 +122,11 @@ class CoffeMachine {
     }
 }
 
-const coffeMachine: CoffeMachine = new CoffeMachine(
-    new Milk(),
-    new Coffe(),
+const teaMachine: TeaMachine = new TeaMachine(
+    new Sugar(),
+    new Tea(),
     new Water()
 );
 
-window['_'] = coffeMachine;
+window['_'] = teaMachine;
 
-// const myLatte = coffeMachine.getLatte();
-
-// console.log(myLatte.description);

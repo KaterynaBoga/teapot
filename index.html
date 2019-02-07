@@ -5,22 +5,20 @@
 </head>
 <body>
 <p>Hello</p>
-<button class="latte">Get Latte</button>
-<button class="capuchino">Get Capuchino</button>
-<button class="americano">Get Americano</button>
+<button class="tea">Get Tea</button>
 
 <script type="text/javascript" src="start.js"></script>
 <script>
     'use strict';
 
-    const myCoffeMachine = window._;
-    let latteBtn = document.querySelector('.latte');
+    const myTeaMachine = window._;
+    let teaBtn = document.querySelector('.tea');
 
-    latteBtn.addEventListener('click', () => {
-        const myLatte = myCoffeMachine.getLatte();
+    teaBtn.addEventListener('click', () => {
+        const myTea = myTeaMachine.getTea();
 
-        console.log(myLatte);
-        console.log(myCoffeMachine);
+        console.log(myTea);
+        console.log(myTeaMachine);
     })
 
 
